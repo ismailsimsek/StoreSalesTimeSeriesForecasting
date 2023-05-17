@@ -1,0 +1,14 @@
+kaggle
+duckdb
+jupyter
+pandas
+matplotlib
+numpy
+# pytorch
+tensorflow-data-validation
+apache-beam[interactive]
+tabulate
+scikit-learn==1.2.2
+jax
+statsmodels
+scikit-lego
