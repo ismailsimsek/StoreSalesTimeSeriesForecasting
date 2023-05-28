@@ -1,12 +1,11 @@
 import pathlib
 
 import pandas as pd
+import xgboost as xgb
 from sklearn import logger
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer, make_column_selector
-from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.multioutput import MultiOutputRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklego.preprocessing import RepeatingBasisFunction
@@ -66,7 +65,7 @@ if __name__ == '__main__':
     pipe = Pipeline(steps=[
         ('customtransformer_preprocessor', CustomPreProcessingTransformer()),
         ('columntransformer_preprocessor', preprocessor),
-        ('MultiOutputRegressor', MultiOutputRegressor(HistGradientBoostingRegressor(max_iter=1000)))
+        ('xgb_model', xgb.XGBRegressor(n_estimators=50, max_depth=5, objective='reg:squarederror'))
     ])
 
     X_train, X_test, y_train, y_test = train_test_split(df.drop(columns=['sales']), df[['sales']], random_state=42)
@@ -86,9 +85,15 @@ if __name__ == '__main__':
     df_test = rawdata(data="test").to_df()
     out = model.predict(df_test)
     predicted_test = y_scaler.inverse_transform(out)
+    print(predicted_test)
     df_test['sales'] = predicted_test
     submit = df_test[['id', 'sales']]
     submit['sales'].loc[submit['sales'] < 0] = 0
     submit.to_csv(path_or_buf=DATA_DIR.joinpath("submit.csv"), index=False)
 #     kaggle.api.competition_submit(file_name=DATA_DIR.joinpath("submit.csv").as_posix(), competition=COMPETITION, message="initial scikit model, FIRST UPLOAD")
 
+    # for train_index, test_index in kf.split(X):
+    #     xgb_model = xgb.XGBRegressor(n_jobs=1).fit(X[train_index], y[train_index])
+    #     predictions = xgb_model.predict(X[test_index])
+    #     actuals = y[test_index]
+    #     print(mean_squared_error(actuals, predictions))
