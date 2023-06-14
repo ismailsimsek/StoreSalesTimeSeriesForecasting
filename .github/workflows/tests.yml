@@ -31,4 +31,5 @@ jobs:
       - name: Run Pylint
         run: |
           python3 --version
+          python3 -m pip install pylint
           python3 -m pylint mymllib setup.py *.py
