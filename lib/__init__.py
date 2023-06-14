@@ -8,9 +8,9 @@ import kaggle
 
 class Utils:
     @staticmethod
-    def download(datadir: Path, competition: str, clean_first: False) -> None:
+    def download(datadir: Path, competition: str, clean_first: bool = False) -> None:
         if clean_first:
-            logging.log("Removing data directory: %s" % datadir.as_posix())
+            logging.info("Removing data directory: %s" % datadir.as_posix())
             shutil.rmtree(datadir.as_posix())
         if not datadir.joinpath("train.csv").exists():
             kaggle.api.authenticate()

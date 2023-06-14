@@ -130,7 +130,9 @@ class CustomPreProcessingTransformer(BaseEstimator, TransformerMixin):
 
 if __name__ == '__main__':
     DATA_DIR = pathlib.Path(__file__).parent.joinpath("data")
-    Utils.download(datadir=DATA_DIR, competition='store-sales-time-series-forecasting')
+    COMPETITION = 'store-sales-time-series-forecasting'
+
+    Utils.download(datadir=DATA_DIR, competition=COMPETITION)
     df = rawdata(data="train").to_df()
     preprocessor = ColumnTransformer([
         ('one-hot-encoder', OneHotEncoder(sparse_output=False), make_column_selector(dtype_include=object)),
@@ -140,7 +142,7 @@ if __name__ == '__main__':
     pipe = Pipeline(steps=[
         ('customtransformer_preprocessor', CustomPreProcessingTransformer()),
         ('columntransformer_preprocessor', preprocessor),
-        ('MultiOutputRegressor', MultiOutputRegressor(HistGradientBoostingRegressor(max_iter=15)))
+        ('MultiOutputRegressor', MultiOutputRegressor(HistGradientBoostingRegressor(max_iter=1000)))
     ])
 
     X_train, X_test, y_train, y_test = train_test_split(df.drop(columns=['sales']), df[['sales']], random_state=42)
@@ -156,6 +158,12 @@ if __name__ == '__main__':
     model = pipe
     model.fit(X_train, y_train)
     print('R2 score: {0:.2f}'.format(model.score(X_test, y_test)))
+    ###################################################################################
     df_test = rawdata(data="test").to_df()
     out = model.predict(df_test)
-    print(y_scaler.inverse_transform(out))
+    predicted_test = y_scaler.inverse_transform(out)
+    df_test['sales'] = predicted_test
+    submit = df_test[['id', 'sales']]
+    submit['sales'].loc[submit['sales'] < 0] = 0
+    submit.to_csv(path_or_buf=DATA_DIR.joinpath("submit.csv"), index=False)
+#     kaggle.api.competition_submit(file_name=DATA_DIR.joinpath("submit.csv").as_posix(), competition=COMPETITION, message="initial scikit model, FIRST UPLOAD")
