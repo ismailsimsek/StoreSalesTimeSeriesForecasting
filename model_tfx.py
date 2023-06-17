@@ -56,7 +56,7 @@ if __name__ == '__main__':
     )
     # components.append(example_validator)
     ###################### PIPELINE ####################################################################################################
-    Utils.remove_files(dir=TFX_DIR, file_pattern=".DS_Store")
+    Utils.remove_files(filedir=TFX_DIR, file_pattern=".DS_Store")
     metadata_connection_config = tfx.orchestration.metadata.sqlite_metadata_connection_config(METADATA_PATH.as_posix())
     pipeline = tfx.dsl.Pipeline(
         pipeline_name=PIPELINE_NAME,
