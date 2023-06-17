@@ -10,7 +10,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklego.preprocessing import RepeatingBasisFunction
 
-from lib import Utils, rawdata
+from mymllib import Utils, rawdata
 
 
 class CustomPreProcessingTransformer(BaseEstimator, TransformerMixin):
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     model.fit(X_train, y_train)
     print('R2 score: {0:.2f}'.format(model.score(X_test, y_test)))
     ###################################################################################
-    df_test = rawdata(data="test").to_df()
+    df_test = rawdata(data="test").to_df().drop(columns=['sales'])
     out = model.predict(df_test)
     predicted_test = y_scaler.inverse_transform(out)
     print(predicted_test)

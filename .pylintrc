@@ -5,12 +5,13 @@ disable=
     C0301, # Line too long (112/100) (line-too-long)
     W1201, # Specify string format arguments as logging function parameters (logging-not-lazy)
     W0703, # Catching too general exception Exception (broad-except)
-    W0212, #: Access to a protected member
-    W0621, #:Redefining name 'xxx' from outer scope (redefined-outer-name)
-    W0104, #: Statement seems to have no effect (pointless-statement)
+    W0212, # Access to a protected member
+    W0621, # Redefining name 'xxx' from outer scope (redefined-outer-name)
+    W0104, # Statement seems to have no effect (pointless-statement)
     W0613, # Unused argument 'X' (unused-argument)
     W0719, # Raising too general exception: Exception (broad-exception-raised)
-    W0511, # (fixme)
+    W0511, # fixme
+    W0237, # Parameter 'input_or_inputs' has been renamed to 
 
-ignored-modules=duckdb
+ignored-modules=duckdb,apache_beam
 dummy-variables-rgx=_
