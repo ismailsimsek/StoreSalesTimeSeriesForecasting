@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 setup_py_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(setup_py_dir)
 
-with open("requirements.txt", "r") as fh:
+with open(file="requirements.txt", mode="r", encoding='utf-8') as fh:
     requirements = fh.readlines()
     install_requires = [req.strip() for req in requirements if
                         not req.strip().startswith('#') and not req.strip().startswith('http') and req.strip()]

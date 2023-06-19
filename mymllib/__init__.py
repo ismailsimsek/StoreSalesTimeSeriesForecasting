@@ -74,8 +74,8 @@ def rawdata(data: str = "train") -> duckdb.DuckDBPyRelation:
 class Utils:
 
     @staticmethod
-    def remove_files(dir: Path, file_pattern: str):
-        files = list(Path(dir).rglob(file_pattern))
+    def remove_files(filedir: Path, file_pattern: str):
+        files = list(Path(filedir).rglob(file_pattern))
         for file in files:
             if file.is_file():
                 logging.info("Deleting %s" % file.as_posix())
