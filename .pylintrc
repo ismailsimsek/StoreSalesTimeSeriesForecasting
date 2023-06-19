@@ -12,6 +12,7 @@ disable=
     W0719, # Raising too general exception: Exception (broad-exception-raised)
     W0511, # fixme
     W0237, # Parameter 'input_or_inputs' has been renamed to 
+    E0401, # Unable to import 'xyz' (import-error)
 
 ignored-modules=duckdb,apache_beam
 dummy-variables-rgx=_
