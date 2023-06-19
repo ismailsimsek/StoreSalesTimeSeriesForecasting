@@ -47,14 +47,14 @@ if __name__ == '__main__':
     components.append(statistics_gen)
     # Generates schema based on statistics files.
     schema_gen = SchemaGen(statistics=statistics_gen.outputs['statistics'], infer_feature_shape=True)
-    # components.append(schema_gen)
+    components.append(schema_gen)
     ####################################################################################################################################
     # Performs anomaly detection based on statistics and data schema.
     example_validator = ExampleValidator(
         statistics=statistics_gen.outputs['statistics'],
         schema=schema_gen.outputs['schema']
     )
-    # components.append(example_validator)
+    components.append(example_validator)
     ###################### PIPELINE ####################################################################################################
     Utils.remove_files(filedir=TFX_DIR, file_pattern=".DS_Store")
     metadata_connection_config = tfx.orchestration.metadata.sqlite_metadata_connection_config(METADATA_PATH.as_posix())
